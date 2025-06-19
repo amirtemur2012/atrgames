@@ -3,11 +3,14 @@
 <head>
   <title>Steve Run</title>
   <style>
-    body { margin: 0; background: #8ec07c; overflow: hidden; font-family: sans-serif; }
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
     canvas {
       display: block;
       margin: auto;
-      background: url('https://raw.githubusercontent.com/rohitrox/steve-run-assets/main/background.png');
+      background: url('https://i.ibb.co/N3gLVsb/mc-bg.jpg') no-repeat center;
       background-size: cover;
     }
   </style>
@@ -26,10 +29,10 @@ let gameSpeed = 4;
 let groundY = 300;
 
 const steveImg = new Image();
-steveImg.src = "https://raw.githubusercontent.com/rohitrox/steve-run-assets/main/steve.png";
+steveImg.src = "https://i.ibb.co/K2jQgdc/steve-skin.png";
 
 const zombieImg = new Image();
-zombieImg.src = "https://raw.githubusercontent.com/rohitrox/steve-run-assets/main/zombie.png";
+zombieImg.src = "https://i.ibb.co/8c6nqCf/zombie.png";
 
 function drawSteve() {
   ctx.drawImage(steveImg, steve.x, steve.y, steve.width, steve.height);
@@ -44,8 +47,8 @@ function spawnZombie() {
 }
 
 function drawGround() {
-  ctx.fillStyle = "#654321";
-  ctx.fillRect(0, groundY, 640, 60);
+  ctx.fillStyle = "#3e2f1c";
+  ctx.fillRect(0, groundY, canvas.width, canvas.height - groundY);
 }
 
 function update() {
@@ -66,7 +69,7 @@ function update() {
       steve.y < zombies[i].y + zombies[i].height &&
       steve.y + steve.height > zombies[i].y
     ) {
-      alert("💀 Game Over! Your score: " + score);
+      alert("💀 Game Over! Score: " + score);
       document.location.reload();
     }
 
@@ -83,8 +86,8 @@ function draw() {
   drawSteve();
   zombies.forEach(drawZombie);
   ctx.fillStyle = "white";
-  ctx.font = "20px sans-serif";
-  ctx.fillText("Score: " + score, 10, 25);
+  ctx.font = "20px Arial";
+  ctx.fillText("Score: " + score, 10, 30);
 }
 
 function loop() {
