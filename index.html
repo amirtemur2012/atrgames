@@ -4,10 +4,64 @@
   <title>Steve Run</title>
   <style>
     body { margin: 0; background: #8ec07c; overflow: hidden; font-family: sans-serif; }
-    canvas { display: block; margin: auto; background: url('https://i.imgur.com/uh6ZpY3.png'); background-size: cover; }
+    canvas {
+      display: block;
+      margin: auto;
+      background: url('https://raw.githubusercontent.com/rohitrox/steve-run-assets/main/background.png');
+      background-size: cover;
+    }
   </style>
 </head>
 <body>
 <canvas id="game" width="640" height="360"></canvas>
 <script>
-const
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let steve = { x: 50, y: 260, width: 40, height: 40, vy: 0, jumping: false };
+let zombies = [];
+let score = 0;
+let gravity = 1.5;
+let gameSpeed = 4;
+let groundY = 300;
+
+const steveImg = new Image();
+steveImg.src = "https://raw.githubusercontent.com/rohitrox/steve-run-assets/main/steve.png";
+
+const zombieImg = new Image();
+zombieImg.src = "https://raw.githubusercontent.com/rohitrox/steve-run-assets/main/zombie.png";
+
+function drawSteve() {
+  ctx.drawImage(steveImg, steve.x, steve.y, steve.width, steve.height);
+}
+
+function drawZombie(z) {
+  ctx.drawImage(zombieImg, z.x, z.y, z.width, z.height);
+}
+
+function spawnZombie() {
+  zombies.push({ x: 640, y: 260, width: 40, height: 40 });
+}
+
+function drawGround() {
+  ctx.fillStyle = "#654321";
+  ctx.fillRect(0, groundY, 640, 60);
+}
+
+function update() {
+  steve.vy += gravity;
+  steve.y += steve.vy;
+  if (steve.y > 260) {
+    steve.y = 260;
+    steve.vy = 0;
+    steve.jumping = false;
+  }
+
+  for (let i = zombies.length - 1; i >= 0; i--) {
+    zombies[i].x -= gameSpeed;
+
+    if (
+      steve.x < zombies[i].x + zombies[i].width &&
+      steve.x + steve.width > zombies[i].x &&
+      steve.y < zombies[i].y + zombies[i].height &&
+      steve.y + steve
