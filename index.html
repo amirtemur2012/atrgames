@@ -7,7 +7,7 @@
     canvas {
       display: block;
       margin: auto;
-      background: url('https://raw.githubusercontent.com/rohitrox/steve-run-assets/main/background.png');
+      background: url('https://i.ibb.co/M5DpF2f/minecraft-bg.png');
       background-size: cover;
     }
   </style>
@@ -26,10 +26,10 @@ let gameSpeed = 4;
 let groundY = 300;
 
 const steveImg = new Image();
-steveImg.src = "https://raw.githubusercontent.com/rohitrox/steve-run-assets/main/steve.png";
+steveImg.src = "https://i.ibb.co/r2Rw3vz/steve.png";
 
 const zombieImg = new Image();
-zombieImg.src = "https://raw.githubusercontent.com/rohitrox/steve-run-assets/main/zombie.png";
+zombieImg.src = "https://i.ibb.co/2ZcJp3B/zombie.png";
 
 function drawSteve() {
   ctx.drawImage(steveImg, steve.x, steve.y, steve.width, steve.height);
@@ -64,4 +64,44 @@ function update() {
       steve.x < zombies[i].x + zombies[i].width &&
       steve.x + steve.width > zombies[i].x &&
       steve.y < zombies[i].y + zombies[i].height &&
-      steve.y + steve
+      steve.y + steve.height > zombies[i].y
+    ) {
+      alert("💀 Game Over! Your score: " + score);
+      document.location.reload();
+    }
+
+    if (zombies[i].x + zombies[i].width < 0) {
+      zombies.splice(i, 1);
+      score++;
+    }
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawGround();
+  drawSteve();
+  zombies.forEach(drawZombie);
+  ctx.fillStyle = "white";
+  ctx.font = "20px sans-serif";
+  ctx.fillText("Score: " + score, 10, 25);
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+document.addEventListener("keydown", e => {
+  if (e.code === "Space" && !steve.jumping) {
+    steve.vy = -20;
+    steve.jumping = true;
+  }
+});
+
+setInterval(spawnZombie, 1500);
+loop();
+</script>
+</body>
+</html>
